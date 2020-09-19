@@ -50,7 +50,7 @@ const Login = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const classes = useStyles();
-  const { token, user, setUserData } = useContext(UserContext);
+  const { setUserData } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

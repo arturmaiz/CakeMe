@@ -1,23 +1,28 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from "react";
 
-import NavBar from '../NavBar/NavBar';
+import Container from "@material-ui/core/Container";
 
-import { CakesContext } from '../../context/cakes/cakesContext';
-import { UserContext } from '../../context/user/userContext';
+import NavBar from "../NavBar/NavBar";
+import Cake from "./Cake/Cake";
+
+import { CakesContext } from "../../context/cakes/cakesContext";
 
 const Cakes = () => {
-  const { user } = useContext(UserContext);
   const { cakes, getCakes } = useContext(CakesContext);
 
   useEffect(() => {
     getCakes();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <NavBar>
-      Cakes
-    </NavBar>
+    <>
+      <NavBar></NavBar>
+      <Container maxWidth="sm">
+        {cakes.map(
+          (cake) => (console.log(cake), (<Cake key={cake._id} cake={cake} />))
+        )}
+      </Container>
+    </>
   );
 };
 
