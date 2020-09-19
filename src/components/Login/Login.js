@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 
 import Header from "../Header/Header";
 
-import { UserContext } from '../../context/user/userContext';
+import { UserContext } from "../../context/user/userContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,15 +42,15 @@ const useStyles = makeStyles((theme) => ({
   },
   signup: {
     display: "flex",
-    width: '100%'
-  }
+    width: "100%",
+  },
 }));
 
-const Login = (props) => {
+const Login = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const classes = useStyles();
-  const { setUserData } = useContext(UserContext);
+  const { token, user, setUserData } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,14 +61,14 @@ const Login = (props) => {
         password,
       });
 
-      localStorage.setItem('token', loginRes.data.token);
+      localStorage.setItem("token", loginRes.data.token);
 
       setUserData({
         token: loginRes.data.token,
-        user: loginRes.data.user
+        user: loginRes.data.user,
       });
 
-      props.history.push('/cakes');
+      history.push("/");
     } catch (err) {
       console.log(err);
     }
@@ -116,7 +116,7 @@ const Login = (props) => {
           <div className={classes.signup}>
             <Button variant="outlined" color="primary" href="/signup">
               Signup
-          </Button>
+            </Button>
           </div>
         </Paper>
       </Container>

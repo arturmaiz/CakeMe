@@ -1,29 +1,31 @@
-import React, { useContext } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React, { useContext } from "react";
+import { Route, Redirect } from "react-router-dom";
 
-import { UserContext } from '../../context/user/userContext';
+import { UserContext } from "../../context/user/userContext";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
-  const { user } = useContext(UserContext);
-  console.log(user);
+  const { token, user } = useContext(UserContext);
 
   return (
-    <Route {...rest} render={
-      props => {
-        if (user) {
+    <Route
+      {...rest}
+      render={(props) => {
+        if (token && user) {
           return <Component {...rest} {...props} />;
         } else {
-          return <Redirect to={
-            {
-              pathname: '/',
-              state: {
-                from: props.location
-              }
-            }
-          } />;
+          return (
+            <Redirect
+              to={{
+                pathname: "/login",
+                state: {
+                  from: props.location.pathname,
+                },
+              }}
+            />
+          );
         }
-      }
-    } />
+      }}
+    />
   );
 };
 

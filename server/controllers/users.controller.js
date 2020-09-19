@@ -1,18 +1,18 @@
-const User = require('../models/user.model');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const User = require("../models/user.model");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const postSignup = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ msg: 'Please enter all fields' });
+      return res.status(400).json({ msg: "Please enter all fields" });
     }
 
     const user = await User.findOne({ email });
 
-    if (user) res.status(400).json({ msg: 'User already exists 😞' });
+    if (user) res.status(400).json({ msg: "User already exists 😞" });
 
     const newUser = await new User({ email, password });
 
@@ -23,17 +23,22 @@ const postSignup = async (req, res) => {
 
         const userRegistered = await newUser.save();
 
-        jwt.sign({ id: userRegistered.id }, process.env.jwtSecret, { expiresIn: 3600 }, (err, token) => {
-          if (err) throw err;
+        jwt.sign(
+          { id: userRegistered.id },
+          process.env.jwtSecret,
+          { expiresIn: 3600 },
+          (err, token) => {
+            if (err) throw err;
 
-          res.status(200).json({
-            token,
-            user: {
-              id: userRegistered.id,
-              email: userRegistered.email
-            }
-          });
-        });
+            res.status(200).json({
+              token,
+              user: {
+                id: userRegistered.id,
+                email: userRegistered.email,
+              },
+            });
+          }
+        );
       });
     });
   } catch (err) {
@@ -46,28 +51,33 @@ const postLogin = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ msg: 'Please enter all fields' });
+      return res.status(400).json({ msg: "Please enter all fields" });
     }
 
     const user = await User.findOne({ email });
 
-    if (!user) res.status(400).json({ msg: 'User Does Not Exist 😞' });
+    if (!user) res.status(400).json({ msg: "User Does Not Exist 😞" });
 
     const hashed = await bcrypt.compare(password, user.password);
 
-    if (!hashed) res.status(400).json({ msg: 'Invalid Credentials 😅' });
+    if (!hashed) res.status(400).json({ msg: "Invalid Credentials 😅" });
 
-    jwt.sign({ id: user.id }, process.env.jwtSecret, { expiresIn: 3600 }, (err, token) => {
-      if (err) throw err;
+    jwt.sign(
+      { id: user.id },
+      process.env.jwtSecret,
+      { expiresIn: 3600 },
+      (err, token) => {
+        if (err) throw err;
 
-      res.status(200).json({
-        token,
-        user: {
-          id: user.id,
-          email: user.email
-        }
-      });
-    });
+        res.status(200).json({
+          token,
+          user: {
+            id: user.id,
+            email: user.email,
+          },
+        });
+      }
+    );
   } catch (err) {
     return res.status(400).json({ err });
   }
@@ -75,7 +85,7 @@ const postLogin = async (req, res) => {
 
 const tokenIsValid = async (req, res) => {
   try {
-    const token = req.header('x-auth-token');
+    const token = req.header("x-auth-token");
 
     if (!token) res.json(false);
 
@@ -95,12 +105,11 @@ const tokenIsValid = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id).select("-password");
 
     return res.json(user);
-
   } catch (err) {
-    return res.status(400).json({ msg: '' });
+    return res.status(400).json(err);
   }
 };
 
