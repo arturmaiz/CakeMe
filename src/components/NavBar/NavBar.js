@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+
+import { Link } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -9,7 +11,9 @@ import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
-import './NavBar.scss';
+import { UserContext } from "../../context/user/userContext";
+
+import "./NavBar.scss";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavBar = () => {
+  const { user, setUserData } = useContext(UserContext);
   const classes = useStyles();
 
   return (
@@ -34,11 +39,27 @@ const NavBar = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Cake Me 🍰
+            <Button color="inherit" href="/">
+              Cake Me 🍰
+            </Button>
           </Typography>
-          <Button color="inherit">Login</Button>
-          <Button color="inherit">Signup</Button>
-
+          {!user && (
+            <>
+              <Button color="inherit">Login</Button>
+              <Button color="inherit">Signup</Button>
+            </>
+          )}
+          <Button
+            color="inherit"
+            onClick={() =>
+              setUserData({
+                token: null,
+                user: null,
+              })
+            }
+          >
+            Logout
+          </Button>
           <IconButton
             edge="start"
             className={classes.badgeBtn}
@@ -51,11 +72,7 @@ const NavBar = () => {
                 vertical: "top",
                 horizontal: "right",
               }}
-              badgeContent={
-                <Typography variant="h6">
-                  1
-                </Typography>
-              }
+              badgeContent={<Typography variant="h6">1</Typography>}
             >
               <ShoppingCartIcon />
             </Badge>
