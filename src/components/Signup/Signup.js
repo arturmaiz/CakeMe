@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
-import axios from 'axios';
-import { UserContext } from '../../context/user/userContext';
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import { UserContext } from "../../context/user/userContext";
 
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -21,12 +21,12 @@ const useStyles = makeStyles((theme) => ({
     display: "grid",
     placeItems: "center",
     padding: theme.spacing(4),
-    position: 'relative',
-    top: '-88px'
+    position: "relative",
+    top: "-88px",
   },
   form: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
   },
   input: {
     marginTop: theme.spacing(2),
@@ -37,18 +37,17 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   title: {
-    color: '#1F2041'
+    color: "#1F2041",
   },
   login: {
     display: "flex",
-    width: '100%'
-  }
+    width: "100%",
+  },
 }));
 
-
 const Signup = (props) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const classes = useStyles();
   const { setUserData } = useContext(UserContext);
 
@@ -56,22 +55,19 @@ const Signup = (props) => {
     e.preventDefault();
 
     try {
-      await axios.post('/users/signup', {
+      const loginRes = await axios.post("/users/signup", {
         email,
-        password
+        password,
       });
-
-      const loginRes = await axios.post('/users/login', { email, password });
 
       setUserData({
         token: loginRes.data.token,
-        user: loginRes.data.user
+        user: loginRes.data.user,
       });
 
-      localStorage.setItem('token', loginRes.data.token);
+      localStorage.setItem("token", loginRes.data.token);
 
-      props.history.push('/cakes');
-
+      props.history.push("/");
     } catch (err) {
       console.log(err);
     }
@@ -106,14 +102,19 @@ const Signup = (props) => {
               variant="outlined"
               required
             />
-            <Button className={classes.button} type="submit" variant="contained" color="primary">
+            <Button
+              className={classes.button}
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
               Signup
             </Button>
           </form>
           <div className={classes.login}>
             <Button variant="outlined" color="primary" href="/">
               Login
-          </Button>
+            </Button>
           </div>
         </Paper>
       </Container>
