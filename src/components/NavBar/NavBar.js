@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavBar = ({ history }) => {
-  const { user, setUserData } = useContext(UserContext);
+  const { token, setUserData } = useContext(UserContext);
   const classes = useStyles();
 
   const handleLogOut = () => {
@@ -52,7 +52,7 @@ const NavBar = ({ history }) => {
               Cake Me 🍰
             </Button>
           </Typography>
-          {!user && (
+          {!token && (
             <>
               <Button color="inherit">Login</Button>
               <Button color="inherit">Signup</Button>
