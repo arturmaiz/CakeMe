@@ -1,30 +1,26 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-import { UserContext } from "../../context/user/userContext";
-
 const ProtectedRoute = ({ component: Component, ...rest }) => {
-  const { token, user } = useContext(UserContext);
+  const token = localStorage.getItem("token");
 
   return (
     <Route
       {...rest}
-      render={(props) => {
-        if (token && user) {
-          return <Component {...rest} {...props} />;
-        } else {
-          return (
-            <Redirect
-              to={{
-                pathname: "/login",
-                state: {
-                  from: props.location,
-                },
-              }}
-            />
-          );
-        }
-      }}
+      render={(props) =>
+        token && token !== "" ? (
+          <Component {...rest} {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: {
+                from: props.location,
+              },
+            }}
+          />
+        )
+      }
     />
   );
 };

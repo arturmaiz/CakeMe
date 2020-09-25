@@ -18,9 +18,9 @@ const Cakes = () => {
     <>
       <NavBar></NavBar>
       <Container maxWidth="sm">
-        {cakes.map(
-          (cake) => (console.log(cake), (<Cake key={cake._id} cake={cake} />))
-        )}
+        {cakes.map((cake) => (
+          <Cake key={cake._id} cake={cake} />
+        ))}
       </Container>
     </>
   );

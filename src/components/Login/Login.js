@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 
 import Container from "@material-ui/core/Container";
@@ -46,11 +46,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = ({ history }) => {
+const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const classes = useStyles();
-  const { setUserData } = useContext(UserContext);
+  const { setUserData, error, token, notValid } = useContext(UserContext);
+
+  useEffect(() => {
+    token ? props.history.push("/") : props.history.push("/login");
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,9 +72,10 @@ const Login = ({ history }) => {
         user: loginRes.data.user,
       });
 
-      history.push("/");
+      props.history.push("/");
     } catch (err) {
-      console.log(err);
+      notValid(err);
+      console.log(error);
     }
   };
 
@@ -119,6 +124,11 @@ const Login = ({ history }) => {
             </Button>
           </div>
         </Paper>
+        {error && (
+          <Typography className={classes.title} variant="h4" gutterBottom>
+            {error}
+          </Typography>
+        )}
       </Container>
     </>
   );

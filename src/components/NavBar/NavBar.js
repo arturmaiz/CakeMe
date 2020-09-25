@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { withRouter } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -29,9 +30,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavBar = () => {
+const NavBar = ({ history }) => {
   const { user, setUserData } = useContext(UserContext);
   const classes = useStyles();
+
+  const handleLogOut = () => {
+    setUserData({
+      token: null,
+      user: null,
+    });
+
+    history.push("/login");
+  };
 
   return (
     <div className={classes.root}>
@@ -48,15 +58,7 @@ const NavBar = () => {
               <Button color="inherit">Signup</Button>
             </>
           )}
-          <Button
-            color="inherit"
-            onClick={() =>
-              setUserData({
-                token: null,
-                user: null,
-              })
-            }
-          >
+          <Button color="inherit" onClick={handleLogOut}>
             Logout
           </Button>
           <IconButton
@@ -82,4 +84,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default withRouter(NavBar);

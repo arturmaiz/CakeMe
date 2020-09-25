@@ -99,7 +99,7 @@ const tokenIsValid = async (req, res) => {
 
     return res.json(true);
   } catch (err) {
-    return res.status(500).json({ error: err.msg });
+    return res.json({ err });
   }
 };
 
