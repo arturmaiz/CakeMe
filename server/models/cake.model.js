@@ -1,22 +1,25 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
 var CakeSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Please add name']
+    required: [true, "Please add name"],
   },
   price: {
     type: Number,
-    required: [true, 'Please add price']
+    required: [true, "Please add price"],
   },
   image: {
     type: String,
-    required: [true, 'Please add image']
+    required: [true, "Please add image"],
+  },
+  description: {
+    type: String,
   },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model('Cake', CakeSchema);
+module.exports = mongoose.model("Cake", CakeSchema);
